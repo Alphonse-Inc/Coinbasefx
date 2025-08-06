@@ -12,6 +12,8 @@ CREATE TABLE users (
     litecoin_address VARCHAR(100),
     is_verified BOOLEAN DEFAULT FALSE,
     verification_token VARCHAR(255),
+    reset_token VARCHAR(255),
+    reset_token_expires DATETIME,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

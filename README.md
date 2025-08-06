@@ -9,6 +9,7 @@ A modern web application for cryptocurrency trading built with HTML5, CSS3, and 
   - Secure login system
   - Password hashing
   - Session management
+  - Forgot password with email reset
 
 - **User Registration Fields**
   - Username
@@ -92,9 +93,12 @@ crypto-trading-platform/
 ├── index.php                # Login page
 ├── register.php             # Registration page
 ├── verify.php               # Email verification page
+├── forgot_password.php      # Forgot password request page
+├── reset_password.php       # Password reset page
 ├── dashboard.php            # Main trading dashboard
 ├── logout.php               # Logout handler
 ├── database.sql             # Database schema
+├── database_update.sql      # Database update for existing installations
 └── README.md               # This file
 ```
 
@@ -117,6 +121,12 @@ crypto-trading-platform/
    - Sell cryptocurrencies to convert back to USD
    - View transaction history
 
+4. **Password Recovery**
+   - Navigate to `forgot_password.php` from login page
+   - Enter your email address
+   - Check email for reset link (expires in 1 hour)
+   - Click link and set new password
+
 ## Database Schema
 
 ### Users Table
@@ -130,6 +140,8 @@ crypto-trading-platform/
 - `litecoin_address` - Litecoin wallet address
 - `is_verified` - Email verification status
 - `verification_token` - Email verification token
+- `reset_token` - Password reset token
+- `reset_token_expires` - Password reset token expiration
 - `created_at` - Account creation timestamp
 
 ### User Balances Table

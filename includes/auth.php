@@ -145,5 +145,127 @@ class Auth {
             return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
         }
     }
+    
+    public function requestPasswordReset($email) {
+        try {
+            // Check if email exists
+            $check_query = "SELECT id, username, full_name FROM users WHERE email = :email AND is_verified = 1";
+            $check_stmt = $this->conn->prepare($check_query);
+            $check_stmt->bindParam(':email', $email);
+            $check_stmt->execute();
+            
+            if ($check_stmt->rowCount() == 0) {
+                return ['success' => false, 'message' => 'Email address not found or account not verified'];
+            }
+            
+            $user = $check_stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Generate reset token
+            $reset_token = bin2hex(random_bytes(32));
+            $expires = date('Y-m-d H:i:s', strtotime('+1 hour')); // Token expires in 1 hour
+            
+            // Update user with reset token
+            $update_query = "UPDATE users SET reset_token = :reset_token, reset_token_expires = :expires WHERE email = :email";
+            $update_stmt = $this->conn->prepare($update_query);
+            $update_stmt->bindParam(':reset_token', $reset_token);
+            $update_stmt->bindParam(':expires', $expires);
+            $update_stmt->bindParam(':email', $email);
+            
+            if ($update_stmt->execute()) {
+                // Send reset email
+                $this->sendPasswordResetEmail($email, $reset_token, $user['full_name']);
+                return ['success' => true, 'message' => 'Password reset instructions have been sent to your email'];
+            }
+            
+            return ['success' => false, 'message' => 'Failed to process password reset request'];
+            
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+        }
+    }
+    
+    public function verifyResetToken($token) {
+        try {
+            $query = "SELECT id, email, full_name, reset_token_expires FROM users WHERE reset_token = :token";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':token', $token);
+            $stmt->execute();
+            
+            if ($stmt->rowCount() == 1) {
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                // Check if token is still valid
+                if (strtotime($user['reset_token_expires']) > time()) {
+                    return ['success' => true, 'user' => $user];
+                } else {
+                    return ['success' => false, 'message' => 'Reset token has expired'];
+                }
+            }
+            
+            return ['success' => false, 'message' => 'Invalid reset token'];
+            
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+        }
+    }
+    
+    public function resetPassword($token, $new_password) {
+        try {
+            // Verify token first
+            $token_result = $this->verifyResetToken($token);
+            if (!$token_result['success']) {
+                return $token_result;
+            }
+            
+            // Hash new password
+            $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+            
+            // Update password and clear reset token
+            $update_query = "UPDATE users SET password = :password, reset_token = NULL, reset_token_expires = NULL WHERE reset_token = :token";
+            $update_stmt = $this->conn->prepare($update_query);
+            $update_stmt->bindParam(':password', $hashed_password);
+            $update_stmt->bindParam(':token', $token);
+            
+            if ($update_stmt->execute() && $update_stmt->rowCount() > 0) {
+                return ['success' => true, 'message' => 'Password has been reset successfully! You can now login with your new password.'];
+            }
+            
+            return ['success' => false, 'message' => 'Failed to reset password'];
+            
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+        }
+    }
+    
+    private function sendPasswordResetEmail($email, $token, $full_name) {
+        $subject = "Password Reset - Crypto Trading Platform";
+        $reset_url = "http://localhost/reset_password.php?token=" . $token;
+        $message = "
+        <html>
+        <head>
+            <title>Password Reset</title>
+        </head>
+        <body>
+            <h2>Password Reset Request</h2>
+            <p>Hello {$full_name},</p>
+            <p>We received a request to reset your password for your Crypto Trading Platform account.</p>
+            <p>Click the link below to reset your password:</p>
+            <p><a href='{$reset_url}' style='background-color: #3b82f6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Reset Password</a></p>
+            <p>If you cannot click the link, copy and paste this URL into your browser:</p>
+            <p>{$reset_url}</p>
+            <p><strong>This link will expire in 1 hour.</strong></p>
+            <p>If you did not request this password reset, please ignore this email.</p>
+            <br>
+            <p>Best regards,<br>Crypto Trading Platform Team</p>
+        </body>
+        </html>
+        ";
+        
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= 'From: noreply@cryptotrading.com' . "\r\n";
+        
+        mail($email, $subject, $message, $headers);
+    }
 }
 ?>

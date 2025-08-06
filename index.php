@@ -68,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
         
         <div class="switch-form">
+            <p><a href="forgot_password.php">Forgot your password?</a></p>
             <p>Don't have an account? <a href="register.php">Register here</a></p>
         </div>
     </div>
