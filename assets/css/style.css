@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3b82f6 100%);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -40,7 +40,7 @@ body {
     color: #333;
     font-size: 2.5em;
     font-weight: 700;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #1e40af, #3b82f6, #60a5fa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -69,16 +69,16 @@ body {
 
 .form-group input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #3b82f6;
     background: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
 }
 
 .btn {
     width: 100%;
     padding: 15px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
     color: white;
     border: none;
     border-radius: 10px;
@@ -91,15 +91,15 @@ body {
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
 }
 
 .btn-secondary {
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    background: linear-gradient(135deg, #dc2626, #ef4444);
 }
 
 .btn-success {
-    background: linear-gradient(135deg, #00d2d3, #54a0ff);
+    background: linear-gradient(135deg, #1d4ed8, #3b82f6);
 }
 
 .switch-form {
@@ -110,14 +110,14 @@ body {
 }
 
 .switch-form a {
-    color: #667eea;
+    color: #3b82f6;
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
 }
 
 .switch-form a:hover {
-    color: #764ba2;
+    color: #1d4ed8;
 }
 
 .alert {
@@ -160,7 +160,7 @@ body {
 
 .logout-btn {
     padding: 10px 20px;
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    background: linear-gradient(135deg, #dc2626, #ef4444);
     color: white;
     border: none;
     border-radius: 8px;
@@ -171,7 +171,7 @@ body {
 
 .logout-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+    box-shadow: 0 5px 15px rgba(220, 38, 38, 0.3);
 }
 
 .dashboard-grid {
@@ -193,7 +193,7 @@ body {
     color: #333;
     margin-bottom: 20px;
     font-size: 1.5em;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -220,7 +220,7 @@ body {
 
 .coin-balance {
     font-weight: 700;
-    color: #667eea;
+    color: #3b82f6;
 }
 
 .trade-form {
@@ -246,7 +246,7 @@ select {
 
 select:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #3b82f6;
     background: #fff;
 }
 
