@@ -1,6 +1,9 @@
 CREATE DATABASE IF NOT EXISTS crypto_trading;
 USE crypto_trading;
 
+-- Note: After running this script, you can optionally run test_data.sql
+-- to add sample users for testing the application
+
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,

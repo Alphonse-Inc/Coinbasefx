@@ -52,10 +52,17 @@ A modern web application for cryptocurrency trading built with HTML5, CSS3, and 
    ```
 
 2. **Database Setup**
-   - Create a MySQL database
-   - Import the database schema:
+   
+   **Option A: Setup with test data (recommended for testing)**
+   ```bash
+   mysql -u username -p < setup_with_test_data.sql
+   ```
+   
+   **Option B: Setup without test data**
    ```bash
    mysql -u username -p database_name < database.sql
+   # Optionally add test data later:
+   mysql -u username -p database_name < test_data.sql
    ```
 
 3. **Configure Database Connection**
@@ -99,6 +106,8 @@ crypto-trading-platform/
 ├── logout.php               # Logout handler
 ├── database.sql             # Database schema
 ├── database_update.sql      # Database update for existing installations
+├── test_data.sql           # Test users and sample data
+├── setup_with_test_data.sql # Complete setup with test data
 └── README.md               # This file
 ```
 
@@ -126,6 +135,23 @@ crypto-trading-platform/
    - Enter your email address
    - Check email for reset link (expires in 1 hour)
    - Click link and set new password
+
+## Test Users
+
+The application includes test users for easy testing (if you used `setup_with_test_data.sql`):
+
+| Username | Password | Email | Status | Balances |
+|----------|----------|-------|--------|----------|
+| `testuser` | `password` | testuser@example.com | ✅ Verified | $1,000 USD, 0.15 BTC, 500 USDT, 2.5 LTC |
+| `admin` | `password` | admin@cryptotrading.com | ✅ Verified | $5,000 USD, 0.05 BTC, 1000 USDT, 5 LTC |
+| `unverified` | `password` | unverified@example.com | ❌ Unverified | $0 USD, 0 BTC, 0 USDT, 0 LTC |
+
+**Quick Start Testing:**
+1. Login with `testuser` / `password`
+2. Explore the dashboard with existing balances
+3. Try buying/selling cryptocurrencies
+4. View transaction history
+5. Test forgot password feature
 
 ## Database Schema
 
